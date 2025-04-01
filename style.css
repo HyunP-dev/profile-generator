@@ -1,0 +1,78 @@
+@import url('https://cdn.jsdelivr.net/gh/fonts-archive/AppleSDGothicNeo/AppleSDGothicNeo.css');
+
+canvas {
+    border-radius: 8px;
+    width: min(calc(100% - 20px), 900px);
+    margin: 10px;
+}
+
+img {
+    border: 1px solid black;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    background-color: black;
+    color: white;
+    overscroll-behavior: none;
+}
+
+header {
+    position: sticky;
+    top: 0;
+    padding-top: 100px;
+    background-color: black;
+    padding: 50px 0px 10px 15px;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 32px;
+    display: inline;
+}
+
+#exportBtn {
+    margin-top: 0px;
+    margin-right: 16px;
+    width: 36px;
+    height: 36px;
+    background-color: white;
+    border-radius: 18px;
+    color: black;
+    font-size: 16px;
+    float: right;
+}
+
+#edits {
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+#edits label {
+    font-size: small;
+    margin-left: 5px;
+    /* font-weight: bold; */
+}
+
+#edits input {
+    margin: 0;
+    margin-top: 2px;
+    margin-bottom: 10px;
+    padding: 0;
+    padding-left: 6px;
+    width: calc(100% - 8px);
+    height: 32px;
+    font-size: 16px;
+    color: white;
+    background-color: rgb(31, 31, 31);
+    border: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+    outline: none;
+}
