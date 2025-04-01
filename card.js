@@ -62,7 +62,7 @@ class Card {
             ctx.fillRect(28, 27 + HEADER_TOP + 80 * index, 5, 24)
 
             ctx.font = "bold 24px Apple SD Gothic Neo"
-            ctx.fillText(item.title, 43, 25 + HEADER_TOP + 80 * index)
+            ctx.fillText(item.title, 43, 25 + HEADER_TOP + 80 * index - 4)
 
             ctx.font = "22px Apple SD Gothic Neo"
             ctx.fillText(item.content, 43, 60 + HEADER_TOP + 80 * index - 4)
@@ -76,7 +76,7 @@ class Card {
             }
             ctx.fillStyle = "black"
             ctx.font = "24px Apple SD Gothic Neo"
-            ctx.fillText(item.content, 460, 30 + 40 * index)
+            ctx.fillText(item.content, 460, 30 + 40 * index - 4)
         }
         if (item instanceof Bar) {
             ctx.fillStyle = color
