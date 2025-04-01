@@ -65,16 +65,14 @@ class Card {
             ctx.fillText(item.title, 43, 25 + HEADER_TOP + 80 * index)
 
             ctx.font = "22px Apple SD Gothic Neo"
-            ctx.fillText(item.content, 43, 60 + HEADER_TOP + 80 * index)
+            ctx.fillText(item.content, 43, 60 + HEADER_TOP + 80 * index - 4)
         }
         if (item instanceof BodyItem) {
             ctx.fillStyle = color
             ctx.font = "bold 24px Apple SD Gothic Neo"
             if (item.title) {
                 ctx.fillRect(255, 32 + 40 * index, 5, 24)
-                console.log(`${32 + 40 * index}에다가 찍음`)
-                ctx.fillText(item.title, 270, 30 + 40 * index)
-                console.log(`${30 + 40 * index}에다가 찍음`)
+                ctx.fillText(item.title, 270, 30 + 40 * index - 4)
             }
             ctx.fillStyle = "black"
             ctx.font = "24px Apple SD Gothic Neo"
