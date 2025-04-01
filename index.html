@@ -9,52 +9,157 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>트친소 생성기</title>
 
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css" integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+        integrity="sha512-Evv84Mr4kqVGRNSgIGL/F/aIDqQb7xQ2vcrdIwxfjThSH8CSR7PBEakCr51Ck+w+/U6swU2Im1vVX0SVk9ABhg=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     <link href="style.css" rel="stylesheet" />
-    
+
     <script src="card.js"></script>
     <script>
+        let card = null
+
         window.onload = () => {
-
             const canvas = document.querySelector("canvas")
-            const card = new Card(canvas)
+            if (card == null) card = new Card(canvas)
 
-            card.setProfilePicture("https://avatars.githubusercontent.com/u/85296811?v=4")
+            let fileSlot = document.querySelector("#file")
+            fileSlot.onchange = event => {
+                /**
+                 * @type {File}
+                 */
+                let file = event.target.files[0]
 
-            let items = [
-                new HeaderItem("닉네임", "박현"),
-                new HeaderItem("나이", "성인"),
-                new HeaderItem("거주지", "서울시 동대문구"),
-                new BodyItem("주 필드", "소프트웨어 개발, 디지털 포렌식"),
-                new BodyItem("취미", "애니 덕질, 코스프레 촬영, 리듬게임,"),
-                new BodyItem("", "작곡, 피아노 연주, 바이올린 연주"),
-                new Bar(),
-                new BodyItem("좋아하는 게임", "프로젝트 세카이"),
-                new BodyItem("좋아하는 애니", "Steins;Gate"),
-                new BodyItem("좋아하는 장르", "SF, 공포"),
-                new BodyItem("좋아하는 캐릭터", "      미즈키"),
-                new Bar(),
-                new BodyItem("트위터 활동 성향", "일상 트윗, 일러 / 사진 맘찍"),
-                new BodyItem("지뢰", "싸움 only")
-            ]
-            items.forEach(item => card.addItem(item))
+                card.setProfilePicture(URL.createObjectURL(file))
+            }
 
-            let ctx = card.ctx
 
-            const characterImage = new Image()
-            characterImage.crossOrigin = "anonymous"
-            characterImage.addEventListener("load", () => {
-                ctx.drawImage(characterImage, 460, 30 + 40 * 7 - 2, 28, 28)
-            })
-            characterImage.src = "./150px-Mizuki-circle.webp"
+
+            // let items = [
+            //     new HeaderItem("닉네임", "박현"),
+            //     new HeaderItem("나이", "성인"),
+            //     new HeaderItem("거주지", "서울시 동대문구"),
+            //     new BodyItem("주 필드", "소프트웨어 개발, 디지털 포렌식"),
+            //     new BodyItem("취미", "애니 덕질, 코스프레 촬영, 리듬게임,"),
+            //     new BodyItem("", "작곡, 피아노 연주, 바이올린 연주"),
+            //     new Bar(),
+            //     new BodyItem("좋아하는 게임", "프로젝트 세카이"),
+            //     new BodyItem("좋아하는 애니", "Steins;Gate"),
+            //     new BodyItem("좋아하는 장르", "SF, 공포"),
+            //     new BodyItem("좋아하는 캐릭터", "      미즈키"),
+            //     new Bar(),
+            //     new BodyItem("트위터 활동 성향", "일상 트윗, 일러 / 사진 맘찍"),
+            //     new BodyItem("지뢰", "싸움 only")
+            // ]
+            // items.forEach(item => card.addItem(item))
+
 
             var link = document.getElementById('link')
             link.setAttribute('download', '트친소.png')
 
             document.querySelector("#exportBtn").onclick = () => {
-                link.setAttribute('href', canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"))
+                link.setAttribute('href', card.canvas.toDataURL("image/png").replace("image/png", "image/octet-stream"))
                 link.click()
             }
+
+            refresh()
+        }
+
+        function add() {
+            let edits = document.querySelector(".edits")
+            let slot = document.createElement("div")
+            slot.className = "slot"
+            slot.innerHTML = `
+                <label class="title-slot">항목</label>
+                <span class="item-menu">
+                    <button class="edit-btn">편집</button>
+                    <button class="delete-btn">삭제</button>
+                    <button class="line-btn">구분선으로 전환</button>
+                    <button class="change-btn">헤더로 전환</button>
+                </span>
+                <input class="content-slot" type="text" />
+            `
+
+            let titleSlot = slot.querySelector(".title-slot")
+            let contentSlot = slot.querySelector(".content-slot")
+
+            let editBtn = slot.querySelector(".edit-btn")
+            let deleteBtn = slot.querySelector(".delete-btn")
+            let lineBtn = slot.querySelector(".line-btn")
+            let changeBtn = slot.querySelector(".change-btn")
+
+            editBtn.onclick = () => {
+                titleSlot.innerText = prompt("제목", titleSlot.innerText) || titleSlot.innerText
+                refresh()
+            }
+
+            deleteBtn.onclick = () => {
+                edits.removeChild(slot)
+                refresh()
+            }
+
+            titleSlot.oninput = () => {
+                refresh()
+            }
+
+            contentSlot.oninput = () => {
+                refresh()
+            }
+
+
+            lineBtn.onclick = () => {
+                let toLine = lineBtn.innerText == "구분선으로 전환"
+                if (toLine) {
+                    titleSlot.innerText = "구분선"
+                    contentSlot.disabled = true
+                    lineBtn.innerText = "구분선에서 해제"
+                } else {
+                    contentSlot.disabled = false
+                    lineBtn.innerText = "구분선으로 전환"
+                }
+                refresh()
+            }
+
+            changeBtn.onclick = () => {
+                if (changeBtn.innerText == "헤더로 전환") {
+                    changeBtn.innerText = "바디로 전환"
+                } else {
+                    changeBtn.innerText = "헤더로 전환"
+                }
+                refresh()
+            }
+            edits.appendChild(slot)
+            refresh()
+        }
+
+        function refresh() {
+            document.querySelector("canvas").remove()
+            let canvas = document.createElement("canvas")
+            card = new Card(canvas)
+            card.clear()
+            document.querySelector("#canvas-container").appendChild(canvas)
+            let fileSlot = document.querySelector("#file")
+            if (fileSlot.files.length > 0) {
+                card.setProfilePicture(URL.createObjectURL(fileSlot.files[0]))
+            }
+
+
+            [...document.querySelectorAll(".slot")].map(slot => {
+                let isLine = slot.querySelector(".line-btn").innerText == "구분선에서 해제"
+                let isHeader = slot.querySelector(".change-btn").innerText == "바디로 전환"
+
+
+                if (isLine) {
+                    return new Bar()
+                }
+                if (isHeader) {
+                    return new HeaderItem(
+                        slot.querySelector(".title-slot").innerText.trim(),
+                        slot.querySelector(".content-slot").value.trim())
+                }
+                return new BodyItem(
+                    slot.querySelector(".title-slot").innerText.trim(),
+                    slot.querySelector(".content-slot").value.trim())
+            }).forEach(item => card.addItem(item))
         }
     </script>
 </head>
@@ -62,19 +167,27 @@
 <body>
     <header>
         <h1>트친소 생성기</h1>
-        <button id="exportBtn"><i class="fa-solid fa-download"></i></span>
+        <span class="item-menu">
+            <button onclick="add()"><i class="fa-solid fa-plus"></i></button>
+            <label id="pictureBtn" for="file"><i class="fa-solid fa-image"></i></label>
+            <input type="file" id="file" hidden="true">
+            <button id="exportBtn"><i class="fa-solid fa-download"></i></button>
+        </span>
     </header>
-    <canvas></canvas>
-    <a id="link"></a>
-    <br>
-    <div id="edits">
-        <label>닉네임</label><br>
-        <input />
-        <label>나이</label><br>
-        <input />
-        <label>거주지</label><br>
-        <input />
+
+    </span>
+    </header>
+    <div id="canvas-container">
+        <canvas></canvas>
     </div>
+    
+    <div class="container">
+        <a id="link"></a>
+        <br>
+        <div class="edits">
+        </div>
+    </div>
+
 </body>
 
 </html>

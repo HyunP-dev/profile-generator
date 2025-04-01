@@ -20,6 +20,7 @@ class Card {
 
         this.canvas = canvas
         let ctx = canvas.getContext("2d")
+
         ctx.textBaseline = "top"
 
         ctx.fillStyle = "white"
@@ -47,7 +48,7 @@ class Card {
 
         let index = item instanceof HeaderItem ? header_count : body_count
         this.print(index, item)
-        
+
         this.items.push(item)
     }
 
@@ -71,7 +72,9 @@ class Card {
             ctx.font = "bold 24px Apple SD Gothic Neo"
             if (item.title) {
                 ctx.fillRect(255, 32 + 40 * index, 5, 24)
+                console.log(`${32 + 40 * index}에다가 찍음`)
                 ctx.fillText(item.title, 270, 30 + 40 * index)
+                console.log(`${30 + 40 * index}에다가 찍음`)
             }
             ctx.fillStyle = "black"
             ctx.font = "24px Apple SD Gothic Neo"
@@ -84,14 +87,15 @@ class Card {
     }
 
     clear() {
+        this.items = []
         let ctx = this.ctx
 
-        ctx.textBaseline = "top"
+        ctx.clearRect(0, 0, this.canvas.width, this.canvas.height)
 
         ctx.fillStyle = "white"
-        ctx.fillRect(0, 0, 900, canvas.height)
+        ctx.fillRect(0, 0, 900, this.canvas.height)
 
         ctx.fillStyle = this.color
-        ctx.fillRect(0, 0, 225, canvas.height)
-    }    
+        ctx.fillRect(0, 0, 225, this.canvas.height)
+    }
 }
